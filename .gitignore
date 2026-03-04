@@ -4,9 +4,11 @@ node_modules/
 # Variaveis de ambiente (chaves de API)
 .env
 
-# Dados gerados
-JSONVizualizer/data/images/
-JSONVizualizer/data/images_processed/
+# Dados gerados (ignorar conteudo, manter pastas)
+JSONVizualizer/data/images/*
+!JSONVizualizer/data/images/.gitkeep
+JSONVizualizer/data/images_processed/*
+!JSONVizualizer/data/images_processed/.gitkeep
 JSONVizualizer/data/logs/
 JSONVizualizer/data/catalog.json
 JSONVizualizer/data/templates.json
