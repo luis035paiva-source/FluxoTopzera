@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Vizualizer</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <h1>JSON Vizualizer</h1>
+        <nav class="tab-nav">
+          <button class="tab-btn active" data-tab="produtos">Editor de JSON produtos</button>
+          <button class="tab-btn" data-tab="templates">Editor e categorizador JSON de templates</button>
+        </nav>
+      </header>
+
+      <!-- ===== TAB: PRODUTOS ===== -->
+      <div id="tab-produtos" class="tab-page">
+        <div class="tab-top-actions">
+          <button id="btnNew" class="btn">Novo Produto</button>
+          <a id="btnExport" class="btn" href="/api/catalog/export">Exportar JSON</a>
+          <button id="btnImport" class="btn">Importar JSON</button>
+          <button id="btnClear" class="btn danger">Limpar catalogo</button>
+          <input id="importInput" type="file" accept="application/json" hidden />
+        </div>
+
+        <section class="filters">
+          <input id="searchInput" type="text" placeholder="Buscar por nome do produto" />
+          <select id="filterCategoria"></select>
+          <input id="filterSubcategoria" type="text" placeholder="Filtrar subcategoria" />
+        </section>
+
+        <section class="layout-grid">
+          <div class="panel" id="formPanel">
+            <h2>Novo produto</h2>
+            <div class="field-group">
+              <label for="fileInput">Upload da imagem</label>
+              <input id="fileInput" type="file" accept="image/*" multiple />
+              <p id="originalFileName" class="hint"></p>
+              <p id="batchStatus" class="hint"></p>
+            </div>
+
+            <div class="preview-wrap">
+              <div>
+                <p>Original</p>
+                <img id="previewOriginal" class="preview" alt="Preview original" />
+              </div>
+              <div>
+                <p>Processada</p>
+                <img id="previewProcessed" class="preview" alt="Preview processada" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <button id="btnRemoveBg" class="btn">Remover fundo (PicWish)</button>
+              <button id="btnAutoFill" class="btn primary">Analisar com ChatGPT</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Itens cadastrados</h2>
+            <p id="catalogCount" class="hint"></p>
+            <div id="catalogGrid" class="catalog-grid"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== TAB: TEMPLATES ===== -->
+      <div id="tab-templates" class="tab-page hidden">
+        <div class="tab-top-actions">
+          <button id="tplBtnLoad" class="btn primary">Carregar imagens do output</button>
+          <button id="tplBtnAnalyzeAll" class="btn">Analisar com ChatGPT</button>
+          <a id="tplBtnExport" class="btn" href="/api/templates/export">Exportar JSON</a>
+          <button id="tplBtnImport" class="btn">Importar JSON</button>
+          <button id="tplBtnClear" class="btn danger">Limpar templates</button>
+          <input id="tplImportInput" type="file" accept="application/json" hidden />
+        </div>
+
+        <section class="filters two-col">
+          <input id="tplSearchInput" type="text" placeholder="Buscar por nome do template" />
+          <select id="tplFilterCategoria"></select>
+        </section>
+
+        <section class="layout-grid">
+          <div class="panel">
+            <h2>Imagens do output</h2>
+            <p id="tplOutputStatus" class="hint"></p>
+            <div id="tplOutputGrid" class="catalog-grid"></div>
+          </div>
+
+          <div class="panel">
+            <h2>Templates cadastrados</h2>
+            <p id="tplCatalogCount" class="hint"></p>
+            <div id="tplCatalogGrid" class="catalog-grid"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Modal: Produtos -->
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <h3 id="modalTitle">Confirmar dados sugeridos</h3>
+        <p id="modalHint" class="hint">Revise e edite se necessario.</p>
+
+        <label for="modalNome">Nome do produto</label>
+        <input id="modalNome" type="text" />
+
+        <label for="modalCategoria">Categoria</label>
+        <select id="modalCategoria"></select>
+
+        <label for="modalSubcategoria">Subcategoria</label>
+        <input id="modalSubcategoria" type="text" />
+
+        <label for="modalConfianca">Confianca</label>
+        <input id="modalConfianca" type="text" readonly />
+
+        <label for="modalObservacoes">Observacoes</label>
+        <textarea id="modalObservacoes" rows="3" readonly></textarea>
+
+        <img id="modalPreview" class="modal-preview" alt="Preview produto" />
+
+        <div class="modal-actions">
+          <button id="btnModalCancel" class="btn">Cancelar</button>
+          <button id="btnModalSave" class="btn primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Templates -->
+    <div id="tplModal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <h3 id="tplModalTitle">Confirmar template</h3>
+        <p id="tplModalHint" class="hint">Revise e edite se necessario.</p>
+
+        <label for="tplModalNome">Nome do template</label>
+        <input id="tplModalNome" type="text" />
+
+        <label for="tplModalCategoria">Categoria</label>
+        <select id="tplModalCategoria"></select>
+
+        <label for="tplModalConfianca">Confianca</label>
+        <input id="tplModalConfianca" type="text" readonly />
+
+        <label for="tplModalObservacoes">Observacoes</label>
+        <textarea id="tplModalObservacoes" rows="3"></textarea>
+
+        <img id="tplModalPreview" class="modal-preview" alt="Preview template" />
+
+        <div class="modal-actions">
+          <button id="tplBtnModalCancel" class="btn">Cancelar</button>
+          <button id="tplBtnModalSave" class="btn primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/app.js"></script>
+    <script src="/templates.js"></script>
+    <script>
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+          document.querySelectorAll('.tab-page').forEach((p) => p.classList.add('hidden'));
+          btn.classList.add('active');
+          document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
+        });
+      });
+    </script>
+  </body>
+</html>

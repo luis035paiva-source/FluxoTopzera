@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Peixaria Imagens — Pesquisa Profissional</title>
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <h1>Peixaria Imagens</h1>
+        <p>Pesquisa Profissional</p>
+      </header>
+
+      <section class="controls">
+        <label for="searchInput" class="label">Buscar item</label>
+        <input id="searchInput" type="text" placeholder="Digite para filtrar..." autocomplete="off" />
+
+        <div class="row between">
+          <span id="visibleCount">0 itens visíveis</span>
+        </div>
+
+        <label class="checkbox-row" for="reuseTabToggle">
+          <input id="reuseTabToggle" type="checkbox" />
+          <span>Reutilizar aba de pesquisa</span>
+        </label>
+
+        <label for="globalSuffixInput" class="label">Sufixo global da pesquisa</label>
+        <input id="globalSuffixInput" type="text" placeholder="foto produto fundo branco" autocomplete="off" />
+      </section>
+
+      <section class="actions">
+        <button id="editListBtn" type="button">Editar lista</button>
+        <button id="importJsonBtn" type="button">Importar JSON</button>
+        <button id="exportJsonBtn" type="button">Exportar JSON</button>
+        <button id="resetDefaultBtn" type="button" class="danger">Resetar lista padrão</button>
+        <input id="importFileInput" type="file" accept="application/json,.json" hidden />
+      </section>
+
+      <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+
+      <section class="list-wrap">
+        <ul id="productList" class="product-list" aria-label="Lista de produtos de peixaria"></ul>
+      </section>
+    </main>
+
+    <dialog id="editorDialog" class="editor-dialog">
+      <form method="dialog" class="editor-shell" id="editorForm">
+        <header class="editor-header">
+          <h2>Editor de lista</h2>
+          <button id="closeEditorBtn" value="cancel" class="ghost" type="submit">Fechar</button>
+        </header>
+
+        <div class="editor-grid">
+          <div>
+            <label class="label" for="editorList">Itens</label>
+            <select id="editorList" size="12" class="editor-list"></select>
+          </div>
+
+          <div class="editor-actions">
+            <label class="label" for="editorInput">Texto do item</label>
+            <input id="editorInput" type="text" placeholder="Digite o item..." autocomplete="off" />
+
+            <div class="grid-buttons">
+              <button id="addItemBtn" type="button">Adicionar</button>
+              <button id="updateItemBtn" type="button">Salvar edição</button>
+              <button id="removeItemBtn" type="button" class="danger">Remover</button>
+              <button id="moveUpBtn" type="button">Subir</button>
+              <button id="moveDownBtn" type="button">Descer</button>
+            </div>
+
+            <p class="hint">Validações: texto não vazio, trim automático e remoção de duplicatas.</p>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="sidepanel.js"></script>
+  </body>
+</html>

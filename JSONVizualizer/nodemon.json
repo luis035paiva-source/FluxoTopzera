@@ -1,0 +1,10 @@
+﻿{
+  "watch": ["server", "public", ".env"],
+  "ext": "js,json,html,css",
+  "ignore": [
+    "data/**",
+    "node_modules/**",
+    ".git/**"
+  ],
+  "exec": "node server/index.js"
+}

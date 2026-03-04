@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Variaveis de ambiente (chaves de API)
+.env
+
+# Dados gerados
+JSONVizualizer/data/images/
+JSONVizualizer/data/images_processed/
+JSONVizualizer/data/logs/
+JSONVizualizer/data/catalog.json
+JSONVizualizer/data/templates.json
+
+# Pasta de downloads temporarios
+downloads/
+
+# Imagens de input/output do Photoshop
+input/
+output/
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini

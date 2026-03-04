@@ -1,0 +1,22 @@
+{
+  "name": "json-vizualizer",
+  "version": "1.0.0",
+  "description": "Dashboard para catalogo de produtos de acougue com processamento de imagem e IA.",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "multer": "^2.0.2",
+    "openai": "^4.80.1",
+    "uuid": "^11.0.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
